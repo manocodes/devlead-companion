@@ -48,12 +48,12 @@ test:
 dev:
 	@echo "🚀 Starting development servers..."
 	@echo "Backend will run on http://localhost:3000"
-	@echo "Frontend will run on http://localhost:3001"
+	@echo "Frontend will run on http://localhost:3002"
 	@echo ""
 	@echo "Press Ctrl+C to stop"
 	@trap 'kill 0' EXIT; \
 	cd backend && npm run start:dev & \
-	cd frontend && PORT=3001 npm start
+	cd frontend && PORT=3002 npm start
 
 # Build Docker images
 docker-build:
