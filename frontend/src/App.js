@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Container,
+  Box,
+  Link,
+} from '@mui/material';
 import logo from './logo.svg';
-import './App.css';
 import Login from './components/Login';
 
 function App() {
@@ -73,36 +81,83 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <div className="user-info">
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            DevLead Companion
+          </Typography>
           {user && (
             <>
-              <p>Welcome, {user.email}!</p>
-              <button onClick={handleLogout} className="logout-btn">
+              <Typography variant="body1" sx={{ mr: 2 }}>
+                {user.email}
+              </Typography>
+              <Button color="inherit" onClick={handleLogout}>
                 Logout
-              </button>
+              </Button>
             </>
           )}
-        </div>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button onClick={fetchHello} style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}>
-          Get Hello
-        </button>
-        {helloMessage && <p style={{ marginTop: '20px', fontSize: '24px' }}>{helloMessage}</p>}
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+        </Toolbar>
+      </AppBar>
+
+      <Container maxWidth="md">
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 'calc(100vh - 64px)',
+            textAlign: 'center',
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Box
+            component="img"
+            src={logo}
+            alt="logo"
+            sx={{
+              height: '40vmin',
+              pointerEvents: 'none',
+              '@media (prefers-reduced-motion: no-preference)': {
+                animation: 'App-logo-spin infinite 20s linear',
+              },
+              '@keyframes App-logo-spin': {
+                from: {
+                  transform: 'rotate(0deg)',
+                },
+                to: {
+                  transform: 'rotate(360deg)',
+                },
+              },
+            }}
+          />
+          <Typography variant="body1" sx={{ my: 2 }}>
+            Edit <code>src/App.js</code> and save to reload.
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={fetchHello}
+            sx={{ my: 2 }}
+          >
+            Get Hello
+          </Button>
+          {helloMessage && (
+            <Typography variant="h5" sx={{ mt: 2 }}>
+              {helloMessage}
+            </Typography>
+          )}
+          <Link
+            href="https://reactjs.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ mt: 2, color: 'primary.main' }}
+          >
+            Learn React
+          </Link>
+        </Box>
+      </Container>
+    </Box>
   );
 }
 

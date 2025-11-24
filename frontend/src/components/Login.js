@@ -1,5 +1,6 @@
 import React from 'react';
-import './Login.css';
+import { Box, Card, CardContent, Typography, Button, Container } from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
 
 function Login() {
     const handleGoogleLogin = () => {
@@ -8,19 +9,52 @@ function Login() {
     };
 
     return (
-        <div className="login-container">
-            <div className="login-card">
-                <h1>DevLead Companion</h1>
-                <p>Sign in to continue</p>
-                <button className="google-login-btn" onClick={handleGoogleLogin}>
-                    <img
-                        src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                        alt="Google logo"
-                    />
-                    Sign in with Google
-                </button>
-            </div>
-        </div>
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '100vh',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            }}
+        >
+            <Container maxWidth="sm">
+                <Card
+                    sx={{
+                        padding: 4,
+                        textAlign: 'center',
+                    }}
+                >
+                    <CardContent>
+                        <Typography variant="h1" component="h1" gutterBottom>
+                            DevLead Companion
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+                            Sign in to continue
+                        </Typography>
+                        <Button
+                            variant="outlined"
+                            size="large"
+                            startIcon={<GoogleIcon />}
+                            onClick={handleGoogleLogin}
+                            fullWidth
+                            sx={{
+                                py: 1.5,
+                                borderWidth: 2,
+                                '&:hover': {
+                                    borderWidth: 2,
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+                                },
+                                transition: 'all 0.3s ease',
+                            }}
+                        >
+                            Sign in with Google
+                        </Button>
+                    </CardContent>
+                </Card>
+            </Container>
+        </Box>
     );
 }
 
