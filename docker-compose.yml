@@ -1,17 +1,29 @@
-version: '3.8'
+version: "3.9"
 
 services:
+  # SQLite data‑only container – owns the volume
+  sqlite:
+    image: alpine:3.20
+    command: tail -f /dev/null
+    volumes:
+      - sqlite-data:/data
+
+  # NestJS backend
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - sqlite
+    volumes:
+      - sqlite-data:/app/data
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=production
-    # Add other environment variables here if needed
+    # Uncomment for hot‑reload during development
+    # command: npm run start:dev
 
-  frontend:
-    build: ./frontend
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
+volumes:
+  sqlite-data:
+    driver: local

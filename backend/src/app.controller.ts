@@ -23,4 +23,15 @@ export class AppController {
       nodeVersion: process.version,
     };
   }
+
+  @Get('env-check')
+  checkEnv(): object {
+    return {
+      hasGoogleClientId: !!process.env.GOOGLE_CLIENT_ID,
+      hasGoogleClientSecret: !!process.env.GOOGLE_CLIENT_SECRET,
+      hasGoogleCallbackUrl: !!process.env.GOOGLE_CALLBACK_URL,
+      googleClientIdPrefix: process.env.GOOGLE_CLIENT_ID?.substring(0, 20) + '...',
+      googleCallbackUrl: process.env.GOOGLE_CALLBACK_URL,
+    };
+  }
 }
