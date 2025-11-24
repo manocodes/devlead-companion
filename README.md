@@ -1,4 +1,4 @@
-# DevLead Companion (AI-powered engineering management hub)#
+# DevLead Companion (AI-powered engineering management hub)
 A web app for engineering managers and leads to:
 - Track team members, skills, goals, and 1:1 notes
 - Plan and track initiatives/projects
