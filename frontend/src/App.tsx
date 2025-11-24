@@ -11,10 +11,15 @@ import {
 import logo from './logo.svg';
 import Login from './components/Login';
 
+interface User {
+  email: string;
+  [key: string]: any;
+}
+
 function App() {
-  const [helloMessage, setHelloMessage] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [helloMessage, setHelloMessage] = useState<string>('');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     // Check if user is returning from Google OAuth
@@ -39,7 +44,7 @@ function App() {
     }
   }, []);
 
-  const fetchProfile = async (token) => {
+  const fetchProfile = async (token: string) => {
     try {
       const response = await fetch('http://localhost:3000/auth/profile', {
         headers: {
@@ -132,7 +137,7 @@ function App() {
             }}
           />
           <Typography variant="body1" sx={{ my: 2 }}>
-            Edit <code>src/App.js</code> and save to reload.
+            Edit <code>src/App.tsx</code> and save to reload.
           </Typography>
           <Button
             variant="contained"
@@ -162,3 +167,4 @@ function App() {
 }
 
 export default App;
+

@@ -96,3 +96,14 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+#### Current Stack ####
+- Framework: NestJS
+- Language: TypeScript
+- Database: SQLite (for development, can be easily swapped for other databases) and ORM
+- Authentication: Google OAuth
+- API: RESTful API
+- Deployment: None (local development only)
+- Runtime: Node.js
+Containerization: Docker
+
