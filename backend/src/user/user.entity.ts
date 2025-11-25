@@ -14,6 +14,9 @@ export class User {
     @Column({ type: 'text', nullable: true })
     avatar_url: string;
 
+    @Column({ type: 'boolean', default: false })
+    is_super_admin: boolean;
+
     @CreateDateColumn({ type: 'timestamp' })
     created_at: Date;
 }

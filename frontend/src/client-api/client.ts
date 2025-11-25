@@ -1,6 +1,10 @@
 export interface User {
+  id: string;
   email: string;
-  [key: string]: any;
+  name?: string;
+  avatar_url?: string;
+  is_super_admin: boolean;
+  created_at: string;
 }
 
 const API_BASE_URL = 'http://localhost:3000';
@@ -13,6 +17,19 @@ export const getUserProfile = async (token: string): Promise<User> => {
   });
   if (!response.ok) {
     throw new Error('Failed to fetch profile');
+  }
+  return response.json();
+};
+
+export const getAllUsers = async (): Promise<User[]> => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_BASE_URL}/users`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Failed to fetch users');
   }
   return response.json();
 };

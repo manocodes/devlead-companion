@@ -51,7 +51,7 @@ describe('AuthContext', () => {
   });
 
   it('loads user from localStorage token on mount', async () => {
-    const mockUser = { id: '1', email: 'test@example.com', name: 'Test User' };
+    const mockUser = { id: '1', email: 'test@example.com', name: 'Test User', is_super_admin: false, created_at: '2024-01-01T00:00:00.000Z' };
     localStorage.setItem('token', 'test-token');
     mockGetUserProfile.mockResolvedValue(mockUser);
 
@@ -69,7 +69,7 @@ describe('AuthContext', () => {
   });
 
   it('handles login with token', async () => {
-    const mockUser = { id: '1', email: 'test@example.com', name: 'Test User' };
+    const mockUser = { id: '1', email: 'test@example.com', name: 'Test User', is_super_admin: false, created_at: '2024-01-01T00:00:00.000Z' };
     mockGetUserProfile.mockResolvedValue(mockUser);
 
     const { result } = renderHook(() => useAuth(), {
@@ -91,7 +91,7 @@ describe('AuthContext', () => {
   });
 
   it('handles logout', async () => {
-    const mockUser = { id: '1', email: 'test@example.com', name: 'Test User' };
+    const mockUser = { id: '1', email: 'test@example.com', name: 'Test User', is_super_admin: false, created_at: '2024-01-01T00:00:00.000Z' };
     localStorage.setItem('token', 'test-token');
     mockGetUserProfile.mockResolvedValue(mockUser);
 
@@ -111,7 +111,7 @@ describe('AuthContext', () => {
   });
 
   it('handles token from URL query parameter', async () => {
-    const mockUser = { id: '1', email: 'test@example.com', name: 'Test User' };
+    const mockUser = { id: '1', email: 'test@example.com', name: 'Test User', is_super_admin: false, created_at: '2024-01-01T00:00:00.000Z' };
     window.location.search = '?token=url-token';
     mockGetUserProfile.mockResolvedValue(mockUser);
 
