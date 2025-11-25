@@ -17,13 +17,23 @@ import { getHelloMessage, getEnvCheck, EnvCheckResponse } from './client-api/cli
 function App() {
   const { user, isAuthenticated, logout, isLoading: isAuthLoading } = useAuth();
 
-  const { data: helloMessage, refetch: fetchHello, isFetching: isHelloFetching, error: helloError } = useQuery({
+  const {
+    data: helloMessage,
+    refetch: fetchHello,
+    isFetching: isHelloFetching,
+    error: helloError,
+  } = useQuery({
     queryKey: ['hello'],
     queryFn: getHelloMessage,
     enabled: false, // Don't fetch automatically on mount, wait for button click
   });
 
-  const { data: envCheck, refetch: fetchEnvCheck, isFetching: isEnvCheckFetching, error: envCheckError } = useQuery({
+  const {
+    data: envCheck,
+    refetch: fetchEnvCheck,
+    isFetching: isEnvCheckFetching,
+    error: envCheckError,
+  } = useQuery({
     queryKey: ['envCheck'],
     queryFn: getEnvCheck,
     enabled: false, // Don't fetch automatically on mount, wait for button click
@@ -32,7 +42,9 @@ function App() {
   // Show loading state while checking auth
   if (isAuthLoading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -132,7 +144,9 @@ function App() {
           )}
           {envCheck && (
             <Box sx={{ mt: 2, textAlign: 'left', width: '100%', maxWidth: 600 }}>
-              <Typography variant="h6" sx={{ mb: 1 }}>Environment Configuration:</Typography>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Environment Configuration:
+              </Typography>
               <Typography variant="body2">
                 ✓ Google Client ID: {envCheck.hasGoogleClientId ? '✅ Set' : '❌ Missing'}
                 {envCheck.hasGoogleClientId && ` (${envCheck.googleClientIdPrefix})`}

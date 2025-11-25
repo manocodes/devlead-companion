@@ -1,19 +1,22 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from './__tests__/test-utils';
 import App from './App';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from './context/AuthContext';
 
-const queryClient = new QueryClient();
+describe('App Component', () => {
+  it('renders login page when not authenticated', async () => {
+    render(<App />);
 
-test('renders login page when not authenticated', () => {
-  render(
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </QueryClientProvider>
-  );
-  const titleElement = screen.getByText(/DevLead Companion/i);
-  expect(titleElement).toBeInTheDocument();
+    await waitFor(() => {
+      const titleElement = screen.getByText(/DevLead Companion/i);
+      expect(titleElement).toBeInTheDocument();
+    });
+  });
+
+  it('shows sign in button on login page', async () => {
+    render(<App />);
+
+    await waitFor(() => {
+      const signInButton = screen.getByRole('button', { name: /sign in with google/i });
+      expect(signInButton).toBeInTheDocument();
+    });
+  });
 });
-
