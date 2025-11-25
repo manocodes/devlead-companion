@@ -15,6 +15,7 @@ import { getEnvCheck } from '../client-api/client';
 export const UserMenu: React.FC = () => {
     const { user, logout } = useAuth();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [showEnvCheck, setShowEnvCheck] = useState(false);
     const open = Boolean(anchorEl);
 
     const {
@@ -36,8 +37,13 @@ export const UserMenu: React.FC = () => {
     };
 
     const handleCheckEnvironment = () => {
+        setShowEnvCheck(true);
         fetchEnvCheck();
         handleClose();
+    };
+
+    const handleCloseEnvCheck = () => {
+        setShowEnvCheck(false);
     };
 
     const handleLogout = () => {
@@ -79,7 +85,7 @@ export const UserMenu: React.FC = () => {
             </Menu>
 
             {/* Environment Check Dialog/Snackbar could be added here */}
-            {envCheck && (
+            {showEnvCheck && envCheck && (
                 <Box
                     sx={{
                         position: 'fixed',
@@ -90,11 +96,17 @@ export const UserMenu: React.FC = () => {
                         p: 2,
                         borderRadius: 1,
                         maxWidth: 400,
+                        zIndex: 1300,
                     }}
                 >
-                    <Typography variant="h6" sx={{ mb: 1 }}>
-                        Environment Configuration:
-                    </Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                        <Typography variant="h6">
+                            Environment Configuration:
+                        </Typography>
+                        <IconButton size="small" onClick={handleCloseEnvCheck}>
+                            <Typography variant="h6" sx={{ lineHeight: 1 }}>×</Typography>
+                        </IconButton>
+                    </Box>
                     <Box sx={{ mb: 1 }}>
                         <Typography variant="body2" color="text.primary">
                             <Box component="span" sx={{ fontWeight: 'bold' }}>Google Client ID:</Box> {envCheck.hasGoogleClientId ? '✅ Set' : '❌ Missing'}
