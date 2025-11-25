@@ -46,9 +46,15 @@ test:
 
 # Start development servers
 dev:
-	@echo "� Starting PostgreSQL container..."
-	docker-compose up -d postgres
-	@echo "�🚀 Starting development servers..."
+	@echo "🐘 Starting PostgreSQL container..."
+	@docker-compose up -d postgres
+	@echo "⏳ Waiting for PostgreSQL to be ready..."
+	@sleep 3
+	@echo "📊 Ensuring devlead-db database exists..."
+	@docker exec devlead-companion-postgres-1 psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'devlead-db'" | grep -q 1 || \
+		docker exec devlead-companion-postgres-1 psql -U postgres -c "CREATE DATABASE \"devlead-db\";"
+	@echo "✅ Database ready!"
+	@echo "🚀 Starting development servers..."
 	@echo "Backend will run on http://localhost:3000"
 	@echo "Frontend will run on http://localhost:3002"
 	@echo ""

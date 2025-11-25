@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
-      POSTGRES_DB: ${DB_NAME:-devlead}
+      POSTGRES_DB: ${DB_NAME:-devlead-db}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:

@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const initializeAuth = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const urlToken = urlParams.get('token');
-      let token = urlToken || localStorage.getItem('token');
+      const token = urlToken || localStorage.getItem('token');
 
       if (token) {
         if (urlToken) {
