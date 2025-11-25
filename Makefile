@@ -46,7 +46,9 @@ test:
 
 # Start development servers
 dev:
-	@echo "🚀 Starting development servers..."
+	@echo "� Starting PostgreSQL container..."
+	docker-compose up -d postgres
+	@echo "�🚀 Starting development servers..."
 	@echo "Backend will run on http://localhost:3000"
 	@echo "Frontend will run on http://localhost:3002"
 	@echo ""

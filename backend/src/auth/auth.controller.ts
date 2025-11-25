@@ -4,6 +4,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
 
+import { GoogleAuthGuard } from './google.guard';
+
 @Controller('auth')
 export class AuthController {
     constructor(
@@ -12,7 +14,7 @@ export class AuthController {
     ) { }
 
     @Get('google')
-    @UseGuards(AuthGuard('google'))
+    @UseGuards(GoogleAuthGuard)
     async googleAuth(@Req() req) {
         // Initiates Google OAuth flow
     }

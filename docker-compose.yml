@@ -1,12 +1,17 @@
 version: "3.9"
 
 services:
-  # SQLite data‑only container – owns the volume
-  sqlite:
-    image: alpine:3.20
-    command: tail -f /dev/null
+  # PostgreSQL container
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-devlead}
     volumes:
-      - sqlite-data:/data
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
   # NestJS backend
   backend:
@@ -15,15 +20,15 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./backend/.env
+    environment:
+      - DB_HOST=postgres
     depends_on:
-      - sqlite
-    volumes:
-      - sqlite-data:/app/data
+      - postgres
     ports:
       - "3000:3000"
     # Uncomment for hot‑reload during development
     # command: npm run start:dev
 
 volumes:
-  sqlite-data:
+  postgres-data:
     driver: local
