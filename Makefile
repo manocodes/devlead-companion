@@ -15,9 +15,12 @@ help:
 	@echo "  make docker-build  - Build Docker images"
 	@echo "  make docker-run    - Run Docker containers"
 	@echo "  make docker-stop   - Stop and remove Docker containers"
+	@echo "  make docker-rebuild - Rebuild Docker images and restart containers"
 	@echo ""
 	@echo "  make ci            - Run full CI pipeline (build + test)"
 	@echo "  make clean         - Clean build artifacts and containers"
+	@echo "  make stop-dev      - Stop development servers"
+	@echo "  make format-frontend - Format frontend code (fixes UI issues)"
 	@echo ""
 
 # Install dependencies
@@ -112,3 +115,9 @@ stop-dev:
 	@echo "🛑 Stopping development servers..."
 	-kill -9 $(lsof -ti:3000 -ti:3001)
 	@echo "✅ Servers stopped!"
+
+# Format frontend code (fixes UI issues)
+format-frontend:
+	@echo "🎨 Formatting frontend code..."
+	cd frontend && npm run format
+	@echo "✅ Frontend code formatted!"

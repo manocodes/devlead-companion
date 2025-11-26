@@ -33,7 +33,13 @@ describe('useAuthState', () => {
   });
 
   it('returns user data when authenticated', async () => {
-    const mockUser = { id: '1', email: 'test@example.com', name: 'Test User', is_super_admin: false, created_at: '2024-01-01T00:00:00.000Z' };
+    const mockUser = {
+      id: '1',
+      email: 'test@example.com',
+      name: 'Test User',
+      is_super_admin: false,
+      created_at: '2024-01-01T00:00:00.000Z',
+    };
     localStorage.setItem('token', 'test-token');
     mockGetUserProfile.mockResolvedValue(mockUser);
 

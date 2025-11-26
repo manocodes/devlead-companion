@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
+import { OrganizationModule } from './organization/organization.module';
+import { Organization } from './organization/organization.entity';
 
 @Module({
   imports: [
@@ -17,12 +19,13 @@ import { User } from './user/user.entity';
       username: process.env.DB_USERNAME || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
       database: process.env.DB_NAME || 'devlead-db',
-      entities: [User],
+      entities: [User, Organization],
       synchronize: true, // only for development; disable in production
       logging: true,
     }),
     AuthModule,
     UserModule,
+    OrganizationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

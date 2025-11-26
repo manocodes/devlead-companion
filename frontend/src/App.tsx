@@ -1,17 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Box,
-  CircularProgress,
-} from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, CircularProgress } from '@mui/material';
 import Login from './components/Login';
 import { Sidebar } from './components/Sidebar';
 import { UserMenu } from './components/UserMenu';
 import { HomePage } from './pages/HomePage';
 import { UsersPage } from './pages/UsersPage';
+import { OrganizationsPage } from './pages/OrganizationsPage';
 import { useAuth } from './context/AuthContext';
 
 function App() {
@@ -36,7 +31,7 @@ function App() {
   return (
     <Router>
       <Box sx={{ display: 'flex', height: '100vh' }}>
-        <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <AppBar position="fixed" sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               DevLead Companion
@@ -60,6 +55,8 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/users" element={<UsersPage />} />
+            <Route path="/organizations" element={<OrganizationsPage />} />
+
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Box>
