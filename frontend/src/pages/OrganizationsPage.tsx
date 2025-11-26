@@ -18,13 +18,28 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  IconButton,
 } from '@mui/material';
-import { getAllOrganizations, createOrganization, Organization } from '../client-api/client';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+import {
+  getAllOrganizations,
+  createOrganization,
+  deleteOrganization,
+  updateOrganization,
+  Organization,
+} from '../client-api/client';
 
 export const OrganizationsPage: React.FC = () => {
   const { user } = useAuth();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [orgToDelete, setOrgToDelete] = useState<Organization | null>(null);
+  const [editingOrgId, setEditingOrgId] = useState<string | null>(null);
+  const [editFormData, setEditFormData] = useState({ name: '', description: '' });
 
   const [formData, setFormData] = useState({
     name: '',
@@ -55,10 +70,61 @@ export const OrganizationsPage: React.FC = () => {
     },
   });
 
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: { name?: string; description?: string } }) =>
+      updateOrganization(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['organizations'] });
+      setEditingOrgId(null);
+      setEditFormData({ name: '', description: '' });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteOrganization,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['organizations'] });
+      setDeleteConfirmOpen(false);
+      setOrgToDelete(null);
+    },
+  });
+
   const handleSave = () => {
     if (formData.name.trim()) {
       createMutation.mutate(formData);
     }
+  };
+
+  const handleEditClick = (org: Organization) => {
+    setEditingOrgId(org.id);
+    setEditFormData({ name: org.name, description: org.description });
+  };
+
+  const handleSaveEdit = () => {
+    if (editingOrgId && editFormData.name.trim()) {
+      updateMutation.mutate({ id: editingOrgId, data: editFormData });
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingOrgId(null);
+    setEditFormData({ name: '', description: '' });
+  };
+
+  const handleDeleteClick = (org: Organization) => {
+    setOrgToDelete(org);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (orgToDelete) {
+      deleteMutation.mutate(orgToDelete.id);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirmOpen(false);
+    setOrgToDelete(null);
   };
 
   if (isLoading) {
@@ -94,19 +160,85 @@ export const OrganizationsPage: React.FC = () => {
               <TableCell>Name</TableCell>
               <TableCell>Description</TableCell>
               <TableCell>Created At</TableCell>
+              {user?.is_super_admin && <TableCell align="right">Actions</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
             {organizations?.map((org: Organization) => (
               <TableRow key={org.id}>
-                <TableCell>{org.name}</TableCell>
-                <TableCell>{org.description}</TableCell>
+                <TableCell>
+                  {editingOrgId === org.id ? (
+                    <TextField
+                      value={editFormData.name}
+                      onChange={e => setEditFormData({ ...editFormData, name: e.target.value })}
+                      size="small"
+                      fullWidth
+                    />
+                  ) : (
+                    org.name
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingOrgId === org.id ? (
+                    <TextField
+                      value={editFormData.description}
+                      onChange={e =>
+                        setEditFormData({ ...editFormData, description: e.target.value })
+                      }
+                      size="small"
+                      fullWidth
+                      multiline
+                    />
+                  ) : (
+                    org.description
+                  )}
+                </TableCell>
                 <TableCell>{new Date(org.created_at).toLocaleDateString()}</TableCell>
+                {user?.is_super_admin && (
+                  <TableCell align="right">
+                    {editingOrgId === org.id ? (
+                      <>
+                        <IconButton
+                          color="primary"
+                          onClick={handleSaveEdit}
+                          size="small"
+                          disabled={updateMutation.isPending}
+                        >
+                          <SaveIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={handleCancelEdit}
+                          size="small"
+                          disabled={updateMutation.isPending}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                      </>
+                    ) : (
+                      <>
+                        <IconButton
+                          color="primary"
+                          onClick={() => handleEditClick(org)}
+                          size="small"
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          color="error"
+                          onClick={() => handleDeleteClick(org)}
+                          size="small"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </>
+                    )}
+                  </TableCell>
+                )}
               </TableRow>
             ))}
             {organizations?.length === 0 && (
               <TableRow>
-                <TableCell colSpan={3} align="center">
+                <TableCell colSpan={user?.is_super_admin ? 4 : 3} align="center">
                   No organizations found
                 </TableCell>
               </TableRow>
@@ -150,6 +282,28 @@ export const OrganizationsPage: React.FC = () => {
             disabled={createMutation.isPending || !formData.name.trim()}
           >
             Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteConfirmOpen} onClose={handleDeleteCancel} maxWidth="sm" fullWidth>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to delete the organization <strong>{orgToDelete?.name}</strong>?
+            This action cannot be undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel}>Cancel</Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleDeleteConfirm}
+            disabled={deleteMutation.isPending}
+          >
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

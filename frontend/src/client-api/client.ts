@@ -78,7 +78,10 @@ export const getEnvCheck = async (): Promise<EnvCheckResponse> => {
   return response.json();
 };
 
-export const createOrganization = async (data: { name: string; description?: string }): Promise<Organization> => {
+export const createOrganization = async (data: {
+  name: string;
+  description?: string;
+}): Promise<Organization> => {
   const token = localStorage.getItem('token');
   const response = await fetch(`${API_BASE_URL}/organizations`, {
     method: 'POST',
@@ -92,4 +95,39 @@ export const createOrganization = async (data: { name: string; description?: str
     throw new Error('Failed to create organization');
   }
   return response.json();
+};
+
+export const updateOrganization = async (
+  id: string,
+  data: {
+    name?: string;
+    description?: string;
+  }
+): Promise<Organization> => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_BASE_URL}/organizations/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to update organization');
+  }
+  return response.json();
+};
+
+export const deleteOrganization = async (id: string): Promise<void> => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_BASE_URL}/organizations/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Failed to delete organization');
+  }
 };
