@@ -1,5 +1,14 @@
 // API Configuration
-export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+// API Configuration
+declare global {
+  interface Window {
+    _env_: {
+      REACT_APP_API_URL?: string;
+    };
+  }
+}
+
+export const API_BASE_URL = window._env_?.REACT_APP_API_URL || process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
 // Auth Constants
 export const AUTH_TOKEN_KEY = 'token';

@@ -2,11 +2,12 @@ import React from 'react';
 import { Box, Card, CardContent, Typography, Button, Container } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 
+import { API_BASE_URL } from '../constants';
+
 function Login() {
   const handleGoogleLogin = () => {
     // Redirect to backend Google OAuth endpoint
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-    window.location.href = `${apiUrl}/auth/google`;
+    window.location.href = `${API_BASE_URL}/auth/google`;
   };
 
   return (
