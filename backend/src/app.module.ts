@@ -14,8 +14,13 @@ import { Organization } from './organization/organization.entity';
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '5432', 10),
+      // Cloud SQL uses Unix socket when DB_HOST starts with /cloudsql/
+      ...(process.env.DB_HOST?.startsWith('/cloudsql/')
+        ? { host: process.env.DB_HOST }
+        : {
+          host: process.env.DB_HOST || 'localhost',
+          port: parseInt(process.env.DB_PORT || '5432', 10),
+        }),
       username: process.env.DB_USERNAME || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
       database: process.env.DB_NAME || 'devlead-db',

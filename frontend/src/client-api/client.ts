@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../constants";
+
 export interface User {
   id: string;
   email: string;
@@ -14,7 +16,8 @@ export interface Organization {
   created_at: string;
 }
 
-const API_BASE_URL = 'http://localhost:3000';
+// const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export const getUserProfile = async (token: string): Promise<User> => {
   const response = await fetch(`${API_BASE_URL}/auth/profile`, {
