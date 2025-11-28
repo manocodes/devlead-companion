@@ -50,3 +50,23 @@ Format: `type/short-description`
 4.  Check **Require approvals** (1 approval).
 5.  Check **Do not allow bypassing the above settings**.
 6.  Click **Create**.
+
+## Working on Multiple Branches
+Sometimes you need to switch tasks (e.g., fix a critical bug while working on a feature).
+
+### Option 1: Git Stash (Quick Switch)
+Use this if you just need to pause your current work for a moment.
+1.  **Save changes**: `git stash`
+2.  **Switch branch**: `git checkout main` (or other branch)
+3.  **Do work & commit**.
+4.  **Return**: `git checkout feat/original-branch`
+5.  **Restore changes**: `git stash pop`
+
+### Option 2: Git Worktree (Simultaneous Work)
+Use this to have two separate folders for different branches (no stashing needed).
+1.  **Create new worktree**: `git worktree add ../devlead-hotfix main`
+    - This creates a folder `../devlead-hotfix` checked out to `main`.
+2.  **Work in that folder** as if it's a separate repo.
+3.  **Remove when done**:
+    - `git worktree remove ../devlead-hotfix`
+
