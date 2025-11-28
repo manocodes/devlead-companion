@@ -72,6 +72,8 @@ jobs:
             --set-env-vars="GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" \
             --set-env-vars="GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" \
             --set-env-vars="GOOGLE_CALLBACK_URL=https://devlead-backend-3ygjnaiiqq-uc.a.run.app/auth/google/callback" \
+            --set-env-vars="FRONTEND_URL=https://devlead-frontend-3ygjnaiiqq-uc.a.run.app" \
+            --set-env-vars="JWT_SECRET=${{ secrets.JWT_SECRET }}" \
             --port=3000 \
             --memory=512Mi \
             --cpu=1 \
