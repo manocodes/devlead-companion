@@ -8,10 +8,18 @@ import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
 import { OrganizationModule } from './organization/organization.module';
 import { Organization } from './organization/organization.entity';
+import { LoggerModule } from 'nestjs-pino';
+import { LogsModule } from './logs/logs.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        autoLogging: true,
+        // Removed pino-pretty to prevent production crashes
+      },
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       // Cloud SQL uses Unix socket when DB_HOST starts with /cloudsql/
@@ -31,6 +39,7 @@ import { Organization } from './organization/organization.entity';
     AuthModule,
     UserModule,
     OrganizationModule,
+    LogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
