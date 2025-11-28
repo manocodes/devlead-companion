@@ -69,6 +69,8 @@ jobs:
             --set-env-vars="DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
             --set-env-vars="DB_NAME=devlead-db" \
             --set-env-vars="NODE_ENV=production" \
+            --set-env-vars="GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" \
+            --set-env-vars="GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" \
             --port=3000 \
             --memory=512Mi \
             --cpu=1 \
