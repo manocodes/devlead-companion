@@ -16,8 +16,11 @@ import { LogsModule } from './logs/logs.module';
     ConfigModule.forRoot(),
     LoggerModule.forRoot({
       pinoHttp: {
+        transport:
+          process.env.NODE_ENV !== 'production'
+            ? { target: 'pino-pretty' }
+            : undefined,
         autoLogging: true,
-        // Removed pino-pretty to prevent production crashes
       },
     }),
     TypeOrmModule.forRoot({
