@@ -14,10 +14,9 @@ export class MetricsService {
                     type: `custom.googleapis.com/${metricType}`,
                 },
                 resource: {
-                    type: 'cloud_run_revision',
+                    type: 'global',
                     labels: {
-                        service_name: process.env.K_SERVICE || 'devlead-backend',
-                        location: process.env.REGION || 'us-central1',
+                        project_id: this.projectId,
                     },
                 },
                 points: [
