@@ -1,11 +1,20 @@
+// Initialize trace agent FIRST (before any other imports except this line)
+if (process.env.NODE_ENV === 'production' || process.env.ENABLE_TRACING === 'true') {
+  require('@google-cloud/trace-agent').start();
+}
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 import { Logger } from 'nestjs-pino';
+import { TracingInterceptor } from './common/tracing.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   app.useLogger(app.get(Logger));
+
+  // Apply tracing interceptor globally
+  app.useGlobalInterceptors(new TracingInterceptor());
 
   // Configure CORS for production
   app.enableCors({
