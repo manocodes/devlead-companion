@@ -6,6 +6,7 @@ import { GoogleStrategy } from './google.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
 import { UserModule } from '../user/user.module';
+import { MonitoringModule } from '../monitoring/monitoring.module';
 
 @Module({
     imports: [
@@ -20,6 +21,7 @@ import { UserModule } from '../user/user.module';
             }),
             inject: [ConfigService],
         }),
+        MonitoringModule,
     ],
     controllers: [AuthController],
     providers: [GoogleStrategy, JwtStrategy],

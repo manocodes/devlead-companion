@@ -6,6 +6,7 @@ import type { Response } from 'express';
 
 import { GoogleAuthGuard } from './google.guard';
 import { UserService } from '../user/user.service';
+import { MetricsService } from '../monitoring/metrics.service';
 
 @Controller('auth')
 export class AuthController {
@@ -13,6 +14,7 @@ export class AuthController {
         private jwtService: JwtService,
         private configService: ConfigService,
         private userService: UserService,
+        private metricsService: MetricsService,
     ) { }
 
     @Get('google')
@@ -38,6 +40,9 @@ export class AuthController {
         // Generate JWT token with user ID and email
         const payload = { email: user.email, sub: user.id };
         const token = this.jwtService.sign(payload);
+
+        // Record login metric
+        await this.metricsService.recordCustomMetric('user_logins', 1);
 
         // Redirect to frontend with token
         const frontendUrl = this.configService.get('FRONTEND_URL');
