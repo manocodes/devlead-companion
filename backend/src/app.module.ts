@@ -10,6 +10,7 @@ import { OrganizationModule } from './organization/organization.module';
 import { Organization } from './organization/organization.entity';
 import { LoggerModule } from 'nestjs-pino';
 import { LogsModule } from './logs/logs.module';
+import { MonitoringModule } from './monitoring/monitoring.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { LogsModule } from './logs/logs.module';
     UserModule,
     OrganizationModule,
     LogsModule,
+    MonitoringModule,
   ],
   controllers: [AppController],
   providers: [AppService],
