@@ -4,7 +4,8 @@
 /build
 
 # Logs
-logs
+# *.log already covers log files, removing 'logs' directory ignore to allow src/logs/
+# logs
 *.log
 npm-debug.log*
 pnpm-debug.log*
