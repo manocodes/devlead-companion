@@ -11,6 +11,7 @@ import { Organization } from './organization/organization.entity';
 import { LoggerModule } from 'nestjs-pino';
 import { LogsModule } from './logs/logs.module';
 import { MonitoringModule } from './monitoring/monitoring.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { MonitoringModule } from './monitoring/monitoring.module';
     OrganizationModule,
     LogsModule,
     MonitoringModule,
+    HealthModule, // Health check endpoints for Cloud Run probes
   ],
   controllers: [AppController],
   providers: [AppService],
