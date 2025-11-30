@@ -40,6 +40,58 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Authorization, Content-Encoding',
   });
 
+  /**
+   * SWAGGER/OPENAPI DOCUMENTATION
+   * 
+   * Automatically generates interactive API documentation at /api
+   * 
+   * HOW IT WORKS:
+   * - Swagger reads decorators from controllers (@ApiTags, @ApiOperation, etc.)
+   * - Generates OpenAPI JSON spec automatically
+   * - Serves interactive UI at /api
+   * 
+   * DISABLE IN PRODUCTION:
+   * - Only serve Swagger in development/staging
+   * - Production should use exported spec file only
+   * 
+   * ACCESS:
+   * - Local: http://localhost:3000/api
+   * - Staging: https://devlead-backend-staging.run.app/api
+   */
+  if (process.env.NODE_ENV !== 'production') {
+    const { DocumentBuilder, SwaggerModule } = await import('@nestjs/swagger');
+
+    const config = new DocumentBuilder()
+      .setTitle('DevLead Companion API')
+      .setDescription('Backend API for DevLead Companion application')
+      .setVersion('1.0')
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          name: 'JWT',
+          description: 'Enter JWT token from /auth/google/callback',
+          in: 'header',
+        },
+        'JWT-auth', // This name is referenced in controller decorators
+      )
+      .addTag('auth', 'Authentication endpoints')
+      .addTag('users', 'User management')
+      .addTag('organizations', 'Organization management')
+      .addTag('health', 'Health check endpoints')
+      .build();
+
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, document, {
+      customSiteTitle: 'DevLead API Docs',
+      customfavIcon: 'https://nestjs.com/img/logo-small.svg',
+      customCss: '.swagger-ui .topbar { display: none }', // Hide default Swagger topbar
+    });
+
+    console.log('📚 Swagger UI available at: http://localhost:3000/api');
+  }
+
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 }
 bootstrap();
