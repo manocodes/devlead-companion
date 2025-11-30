@@ -41,8 +41,8 @@ export class AuthController {
         const payload = { email: user.email, sub: user.id };
         const token = this.jwtService.sign(payload);
 
-        // Record login metric
-        await this.metricsService.recordCustomMetric('user_logins', 1);
+        // Record login metric (fire-and-forget, doesn't block response)
+        await this.metricsService.recordUserLogin();
 
         // Redirect to frontend with token
         const frontendUrl = this.configService.get('FRONTEND_URL');
